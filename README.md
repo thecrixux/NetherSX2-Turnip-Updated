@@ -1,58 +1,49 @@
-# NetherSX2-Turnip
+# NetherSX2 Turnip Updated Builds
 
-NetherSX2 with Adreno Turnip Driver support
+Custom NetherSX2 builds with **Turnip Vulkan drivers bundled directly into the APK**.
 
-*** **THIS IS ONLY FOR QUALCOMM (i.e. Adreno) BASED SYSTEMS** ***
+The goal of this project is simple: provide different APK builds with carefully selected Turnip drivers already integrated, so users don't need to manually download, install, or configure external drivers.
 
-# Download
-[Releases](https://github.com/nckstwrt/NetherSX2-Turnip/releases)
+---
 
-## Description
+## What is different?
 
-NetherSX2 (formerly AetherSX2) does not support selecting a Turnip driver for Qualcomm based devices. This solution provides inbuilt support for Turnip drivers to provide better performance when using Vulkan rendering in NetherSX (Android PlayStation 2 emulation)
+Instead of including multiple drivers and adding a driver selector inside the emulator, each build includes **one specific Vulkan driver**.
 
-## Changes
+The Vulkan shim has been modified to load a single bundled driver:
 
-This patch modifies **NetherSX2-v2.2n-4248** with these changes:
+```text
+libvulkan_freedreno.so
 
-* Added 6 Turnip Drivers built in to NetherSX2-Turnip with Adreno detection:
-  * 24.1.0_R18.a6xx - For **SD865** devices (Retroid Flip 2, Retroid Mini, etc) as it gives the best performance. This is a modifed version of the 24.1.0_R18.a6xx driver specifically for SD865 (as the original could cause the whole system to reboot)
-  * StevenMXZ's libvulkan_freedreno_Gen8_v31 for **Snapdragon Elite/8 Gen 5**
-  * K11MCH1's Turnip v25.3.0 R6 Gmem for Adreno 710/720 devices
-  * Mr.Purple's T19 - For older Adreno 610 / SnapDragon 665 devices
-  * Mr.Purple's T24 - For Adreno 810 devices as this driver reportedly works best for these models (Snapdragon 8s Gen 3 and 4)
-  * Mr.Purple's T28 - For **everything else** as this is the latest Mesa/Turnip driver that should work for everything else.
-    
-* Removes the restriction on new packages names for the APKs. Normal NetherSX2 had to be installed over AetherSX2 whereas NetherSX2-Turnip lives alongside your existing NetherSX2/AetherSX2 and does not overwrite your existing AetherSX2/NetherSX2 installs or settings.
+# Available Builds:
 
-* Vulkan is now the default renderer (instead of OpenGL)
+WN Turnip Performance
+A performance-oriented Turnip driver designed to support a wide range of Adreno GPUs.
+Recommended for users looking for maximum performance.
+Credits: https://github.com/WinNative-Emu/Drivers
 
-* Removed the annoying warning "should not be sold, etc" notification
+Turnip 710 / 720 / 722
+A specialized Turnip driver for:
+Adreno 710
+Adreno 720
+Adreno 722
+This build is intended for devices using these GPUs, which may require specific driver optimizations.
+Credits: https://github.com/Vauzi-17/710
 
-* VulkanShim now logs to /sdcard/Android/data/xyz.aethersx2.tturnip/files/vulkan_shim.log if you want to debug any issues
+Turnip 8XX 
+A build using StevenMXZ Turnip driver focused on newer high-end Adreno GPUs.
+This build is intended primarily for supported Adreno 8xx devices.
+Credits: https://github.com/StevenMXZ/Adreno-Tools-Drivers
 
-## How It Works
+Important
+These builds bundle third-party Turnip/Mesa Vulkan drivers.
+Driver credits belong to their respective developers and contributors.
+This project does not claim ownership of the bundled drivers.
 
-libemucore.so is modified to load the supplied libvulkad.so instead of the system's libvulkan.so. Our libvulkad.so then loads libvulkan.so but patches it in memory so that instead of loading the system's ICD driver it loads whatever Turnip driver we want (based on what system is detected)
+Disclaimer
+This is an experimental community project.
+Compatibility is not guaranteed and different builds may behave differently depending on the device.
+Always keep your existing emulator installation and settings backed up before testing experimental builds
 
-## Results
-
-With NetherSX2-Turnip on my Retroid SD865 devices I can run taxing games like Sly 2 - Band of Thieves at 2x resolution without slowdown. Everything runs faster and therefore higher resolutions are now available to be used than when using the stock Qualcomm drivers (or OpenGL)
-
-## Tips
-
-There is one setting that can make a big difference and that is Hardware Download Mode (under Graphics). Setting this from Accurate to Disable Readbacks can make quite a difference with only rare graphical effects. Worth experimenting with to get games like **Nascar 2004 Thunder** working at maximum speed.
-
-Additionally, for the **Need For Speed** games at least, setting Blending Accuracy to Minimum can make a big difference on lower powered devices.
-
-For **The Getaway** set Blending Accuracy to High (gets rid of the white fog), Hardware Download Mode to Disable Readbacks and EE Cycle Rate to 60% (-2)
-
-For **Gran Turismo 4** if you can see your car, but the background looks all black, that can be fixed via going to Settings -> Advanced -> Scroll down to Disable Framebuffer Fetch and set it as disabled. That should fix it.
-
-For **Star Ocean: Till the end of Time** if you have issues with the faces of characters flickering/having bad shadows go to Settings then scroll to the far most right Advanced tab. Find the option there called Enable VU0 Recompiler (Micro Mode) and turn it off while in game. You will need to turn it back on when you restart the game for the game to start properly.
-
-For **Dragon Ball Z - Budokai Tenkaichi 3** hold down on the game to bring up the Game Properties. In there go to the Advanced Settings and set the following: Auto Flush (Hardware): On, Half-Pixel Offset: Special (Texture), Software CLUT Render: Normal, Texture Inside RT: Inside Target, Skip Draw Start: 3, Skip Draw End: 3, TC Offset X (/1000): 200, TC Offset Y (/1000): 400. In Graphics Settings set Hardware Download Mode to Disable Readbacks else you will most likely get poor FPS.
-
-## NetherSX2 Classic / v3668
-
-I have made the same changes to NetherSX2 Classic -  the additions may not be worth as much as people expect as the benefits from NetherSX2 Classic come from the OpenGL renderer as much as anything. But have released it now and will continue to do so alongside the regular 4248 version.
+Other credits go to:
+Trixarian and nckstwrt
